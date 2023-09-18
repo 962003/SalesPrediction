@@ -1,0 +1,63 @@
+import numpy as np
+import matplotlib.pyplot as plt
+import plotly.express as px
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_squared_error, r2_score,mean_absolute_percentage_error
+from sklearn.linear_model import LinearRegression
+import IPython.display as dsp
+
+SalesPrediction=pd.read_csv('advertising1.csv')
+
+SalesPrediction.head()
+
+SalesPrediction.info()
+
+SalesPrediction.tail()
+
+SalesPrediction.size
+
+SalesPrediction.describe()
+
+SalesPrediction.isna().sum()
+
+SalesPrediction.duplicated().sum()
+
+SalesPrediction[SalesPrediction.duplicated()]
+
+px.scatter(SalesPrediction,x='Sales',y='TV',width=500,height=600,title='TV vs sales')
+
+px.scatter(SalesPrediction,x='Sales',y='Newspaper',width=500,height=600,title='TV vs Newspaper')
+
+px.scatter(SalesPrediction,x='Sales',y='Radio',width=500,height=600,title='TV vs Radio')
+
+b=SalesPrediction['Sales']
+a=SalesPrediction.drop(['Sales'],axis=1)
+
+a_train,a_test,b_train,b_test=train_test_split(a,b,test_size=0.4,random_state=40)
+
+LR=LinearRegression()
+
+LR.fit(a_train,b_train)
+
+LR.coef_
+
+LR.intercept_
+
+b_pred=LR.predict(a_test)
+
+b_pred[:5]
+
+mean_squared_error(b_test,b_pred)
+
+mean_absolute_percentage_error(b_test,b_pred)
+
+r2_score(b_test,b_pred)
+
+sales_test_pred=pd.DataFrame({'Actual Values':b_test,"Predicted values":b_pred})
+
+sales_test_pred
+
+px.scatter({'Actual Values':b_test,"Predict Values":b_pred})
+
+
